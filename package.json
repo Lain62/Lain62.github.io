@@ -1,0 +1,27 @@
+{
+	"name": "lain62.github.io",
+	"version": "1.0.0",
+	"description": "Ivulai's Website",
+	"main": "index.js",
+	"scripts": {
+		"dev": "astro dev",
+		"build": "astro build",
+		"preview": "astro preview"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+ssh://git@github.com/Lain62/Lain62.github.io.git"
+	},
+	"keywords": [
+		"website"
+	],
+	"author": "lain62",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/Lain62/Lain62.github.io/issues"
+	},
+	"homepage": "https://github.com/Lain62/Lain62.github.io#readme",
+	"dependencies": {
+		"astro": "^5.2.3"
+	}
+}
