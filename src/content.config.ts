@@ -9,6 +9,7 @@ const gallery = defineCollection({
 	loader: glob({ pattern: "*.md", base: "src/gallery/" }),
 	schema: z.object({
 		date: z.string(),
+		name: z.string(),
 		image: z.string(),
 		alt: z.string()
 	})

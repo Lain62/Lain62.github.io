@@ -1,0 +1,35 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+
+export async function getStaticPaths({ paginate }) {
+	const posts = await getCollection("gallery");
+	return paginate(posts, { pageSize: 2 });
+}
+const images = import.meta.glob<{ default: ImageMetadata }>("/src/images/art/*.{jpeg,jpg,png,gif}");
+const { page } = Astro.props;
+---
+<h1>{page.currentPage}</h1>
+{page.url.prev != undefined? <a href={page.url.prev}>Prev Page</a> : <p></p>}
+{page.url.next != undefined? <a href={page.url.next}>Next Page</a> : <p></p>}
+<div>
+	<ul>
+		{page.data.sort((a, b) =>  Date.parse(b.data.date) - Date.parse(a.data.date)).map(({ data }) => {
+		const imgPath = `/src/images/art/${data.image}`;
+		return <li class="list" ><a href={`/gallery/art/${data.name}`}><Image class="art" src={images[imgPath]()} alt={data.alt}></Image></a></li>
+		})}
+	</ul>
+</div>
+<style>
+ .list {
+	 max-height:200px;
+	 width: auto;
+	 
+ }
+ .art {
+	 width: auto;
+	 height: auto;
+	 max-width:200px;
+	 max-height: 200px;
+ }
+</style>
