@@ -10,6 +10,20 @@ export async function getStaticPaths({ paginate }) {
 const images = import.meta.glob<{ default: ImageMetadata }>("/src/gallery/images/art-thumbnail/*.{jpeg,jpg,png,gif}");
 const { page } = Astro.props;
 ---
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="keywords" content="HTML, CSS, Astro, Gallery, Art, Ivulai, ivu, ivulai, lain62, Lain62">
+    <meta name="description" content="Lain62's art Gallery">
+    <meta name="author" content="Lain62">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Lain62's Gallery">
+    <meta property="og:description" content="Lain62's art gallery">
+
+    <title>Lain62's Gallery</title>
+</head>
 <body>
 	<div class="gallery-header">
 		<h1>Lain62's Gallery</h1>
@@ -143,7 +157,7 @@ const { page } = Astro.props;
 	 display: flex;
 	 flex-direction: row;
 	 list-style-type: none;
-	 gap: 20px;
+	 gap: 40px;
 	 justify-content: center;
 	 max-width: 900px;
 	 margin-left: auto;
@@ -151,14 +165,14 @@ const { page } = Astro.props;
 	 flex-wrap: wrap;
  }
  .list-item {
-	 max-height:250px;
-	 max-width:250px;
-	 width: auto;
-	 
+	 object-fit:cover;
+	 width: 10em;
+	 height: 10em;
  }
  .art {
-	 width: auto;
-	 height: auto;
+	 object-fit:cover;
+	 width: 10em;
+	 height: 10em;
 	 max-width:250px;
 	 max-height: 250px;
 	 background-color: #EA638C;
