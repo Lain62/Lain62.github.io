@@ -2,8 +2,6 @@
 import { getCollection, render } from 'astro:content';
 import { Image } from 'astro:assets';
 
-// 1. Generate a new path for every collection entry
-
 export async function getStaticPaths() {
 	const posts = await getCollection("gallery");
 	return posts.map(post => ({
@@ -12,20 +10,46 @@ export async function getStaticPaths() {
     }));
 }
 
-
-// 2. For your template, you can get the entry directly from the prop
 const { post } = Astro.props;
 const images = import.meta.glob<{ default: ImageMetadata }>("/src/gallery/images/art/*.{jpeg,jpg,png,gif}");
+const imagesThumbnail = import.meta.glob<{ default: ImageMetadata }>("/src/gallery/images/art-thumbnail/*.{jpeg,jpg,png,gif}");
 const { Content } = await render(post);
 const imgPath = `/src/gallery/images/art/${post.data.image}`;
+const imgThumbnailPath = `/src/gallery/images/art-thumbnail/${post.data.image}`;
 ---
-<Image class="art" src={images[imgPath]()} alt={post.data.alt} />
-<p>{post.data.date}</p>
-<Content />
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="keywords" content="HTML, CSS, Astro, Gallery, Art, Ivulai, ivu, ivulai, lain62, Lain62">
+    <meta name="description" content="Lain62's art gallery">
+    <meta name="author" content="Lain62">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Lain62's Gallery">
+    <meta property="og:description" content="Lain62's art gallery">
+    <meta property="og:image" content={imagesThumbnail[imgThumbnailPath]()} />
+    <meta property="og:url" content={Astro.url.pathname} />
+    
+    <title>Lain62's Gallery {post.data.name}</title>
+</head>
+<body>
+	<div>
+		<h1>Lain62's Gallery</h1>		
+	</div>
+	<div>
+		<Image class="art" src={images[imgPath]()} alt={post.data.alt} />
+		<h2>{post.data.date}</h2>
+		<Content />		
+	</div>
+	<div>
+		
+	</div>
+</body>
 <style>
  .art {
 	 width: auto;
 	 height: 100%;
-     max-height:600px;
+     max-height: 600px;
  }
 </style>
