@@ -6,7 +6,7 @@ import { glob, file } from 'astro/loaders';
 
 // 3. Define your collection(s)
 const gallery = defineCollection({
-	loader: glob({ pattern: "*.md", base: "src/gallery/" }),
+	loader: glob({ pattern: "*.md", base: "src/gallery/pages" }),
 	schema: z.object({
 		date: z.string(),
 		name: z.string(),

@@ -6,7 +6,7 @@ export async function getStaticPaths({ paginate }) {
 	const posts = await getCollection("gallery");
 	return paginate(posts, { pageSize: 16 });
 }
-const images = import.meta.glob<{ default: ImageMetadata }>("/src/images/art-thumbnail/*.{jpeg,jpg,png,gif}");
+const images = import.meta.glob<{ default: ImageMetadata }>("/src/gallery/images/art-thumbnail/*.{jpeg,jpg,png,gif}");
 const { page } = Astro.props;
 ---
 <div class="gallery-header">
@@ -15,7 +15,7 @@ const { page } = Astro.props;
 <div class="gallery-main">
 	<ul class="list-main">
 		{page.data.sort((a, b) =>  Date.parse(b.data.date) - Date.parse(a.data.date)).map(({ data }) => {
-		const imgPath = `/src/images/art-thumbnail/${data.image}`;
+		const imgPath = `/src/gallery/images/art-thumbnail/${data.image}`;
 		return <li class="list-item" ><a href={`/gallery/art/${data.name}`}><Image class="art" src={images[imgPath]()} alt={data.alt}></Image></a></li>
 		})}
 	</ul>

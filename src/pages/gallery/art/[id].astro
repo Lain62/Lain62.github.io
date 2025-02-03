@@ -15,9 +15,9 @@ export async function getStaticPaths() {
 
 // 2. For your template, you can get the entry directly from the prop
 const { post } = Astro.props;
-const images = import.meta.glob<{ default: ImageMetadata }>("/src/images/art/*.{jpeg,jpg,png,gif}");
+const images = import.meta.glob<{ default: ImageMetadata }>("/src/gallery/images/art/*.{jpeg,jpg,png,gif}");
 const { Content } = await render(post);
-const imgPath = `/src/images/art/${post.data.image}`;
+const imgPath = `/src/gallery/images/art/${post.data.image}`;
 ---
 <Image class="art" src={images[imgPath]()} alt={post.data.alt} />
 <p>{post.data.date}</p>
