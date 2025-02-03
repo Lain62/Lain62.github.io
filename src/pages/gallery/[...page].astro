@@ -4,30 +4,34 @@ import { Image } from 'astro:assets';
 
 export async function getStaticPaths({ paginate }) {
 	const posts = await getCollection("gallery");
+	posts.sort((a, b) =>  Date.parse(b.data.date) - Date.parse(a.data.date))
 	return paginate(posts, { pageSize: 16 });
 }
 const images = import.meta.glob<{ default: ImageMetadata }>("/src/gallery/images/art-thumbnail/*.{jpeg,jpg,png,gif}");
 const { page } = Astro.props;
 ---
-<div class="gallery-header">
-	<h1>Gallery</h1>
-</div>
-<div class="gallery-main">
-	<ul class="list-main">
-		{page.data.sort((a, b) =>  Date.parse(b.data.date) - Date.parse(a.data.date)).map(({ data }) => {
-		const imgPath = `/src/gallery/images/art-thumbnail/${data.image}`;
-		return <li class="list-item" ><a href={`/gallery/art/${data.name}`}><Image class="art" src={images[imgPath]()} alt={data.alt}></Image></a></li>
-		})}
-	</ul>
-</div>
-<div class="gallery-page">
-	<h2>{page.currentPage}</h2>
-</div>
-<div class="gallery-footer">
-	{page.url.prev != undefined? <a href={page.url.prev}><==|</a> : <p></p>}
-	{page.url.next != undefined? <a href={page.url.next}>|==></a> : <p></p>}	
-</div>
+<body>
+	<div class="gallery-header">
+		<h1>Lain62's Gallery</h1>
+	</div>
+	<div class="gallery-main">
+		<ul class="list-main">
+			{page.data.map(({ data }) => {
+			const imgPath = `/src/gallery/images/art-thumbnail/${data.image}`;
+			return <li class="list-item" ><a href={`/gallery/art/${data.name}`}><Image class="art" src={images[imgPath]()} alt={data.alt}></Image></a></li>
+			})}
+		</ul>
+	</div>
+	<div class="gallery-page">
+		<h2>{page.currentPage}</h2>
+	</div>
+	<div class="gallery-footer">
+		{page.url.prev != undefined? <a href={page.url.prev}><</a> : <p></p>}
+		{page.url.next != undefined? <a href={page.url.next}>></a> : <p></p>}	
+	</div>
+</body>
 <style>
+
  body {
 	 background-color: #1B2021;
  }
@@ -35,19 +39,23 @@ const { page } = Astro.props;
 	 text-decoration: none;
 	 color: #30343F;
 	 font-size: 48px;
+	 margin: 0;
+	 padding-left: 10px;
+	 padding-right: 10px;
 	 margin-left: 20px;
 	 margin-right: 20px;
 	 border-radius: 10px;
-	 border-bottom-width: 4px;
-	 border-bottom-style: solid;
-	 border-bottom-color: #89023E;
+	 /* border-bottom-width: 4px;
+		border-bottom-style: solid;
+		border-bottom-color: #89023E; */
 	 background-color: #EA638C;
+	 font-family: "Azeret Mono";
  }
 
  .gallery-footer a:hover {
 	 color: #FFD9DA;
 	 background-color: #89023E;
-	 border-bottom-color: #EA638C;
+	 /* border-bottom-color: #EA638C; */
  }
  
  .gallery-footer {
@@ -90,6 +98,7 @@ const { page } = Astro.props;
 	 border-width: 2px;
 	 color: #FFD9DA;
 	 border-color: #EA638C;
+	 font-family: "Azeret Mono";
  }
  
  .gallery-header {
@@ -118,6 +127,7 @@ const { page } = Astro.props;
 	 color: #FFD9DA;
 	 text-shadow: 0 2px #89023E;
 	 font-size: 24px;
+	 font-family: "Azeret Mono";
  }
 
  .gallery-main {
@@ -154,11 +164,11 @@ const { page } = Astro.props;
 	 background-color: #EA638C;
 	 padding: 4px;
 	 border-radius: 15px;
-	 border-bottom: 6px solid #89023E;	 
+	 /* border-bottom: 6px solid #89023E; */	 
  }
  .art:hover {
 	 background-color: #89023E;
-	 border-bottom: 6px solid #EA638C;
+	 /* border-bottom: 6px solid #EA638C; */
 	 cursor: pointer;
  }
 </style>
