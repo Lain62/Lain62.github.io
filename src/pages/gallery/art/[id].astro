@@ -1,6 +1,10 @@
 ---
 import { getCollection, render } from 'astro:content';
 import { Image } from 'astro:assets';
+import Header from '/src/components/Header.astro';
+import Footer from '/src/components/Footer.astro';
+import MainBody from '/src/components/MainBody.astro';
+import HeadDefault from '/src/components/HeadDefault.astro';
 
 export async function getStaticPaths() {
 	const posts = await getCollection("gallery");
@@ -12,44 +16,87 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const images = import.meta.glob<{ default: ImageMetadata }>("/src/gallery/images/art/*.{jpeg,jpg,png,gif}");
-const imagesThumbnail = import.meta.glob<{ default: ImageMetadata }>("/src/gallery/images/art-thumbnail/*.{jpeg,jpg,png,gif}");
 const { Content } = await render(post);
 const imgPath = `/src/gallery/images/art/${post.data.image}`;
-const imgThumbnailPath = `/src/gallery/images/art-thumbnail/${post.data.image}`;
+const pageTitle = post.data.name + " - Lain62's art"
 ---
-<head>
-	<meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <meta name="keywords" content="HTML, CSS, Astro, Gallery, Art, Ivulai, ivu, ivulai, lain62, Lain62">
-    <meta name="description" content="Lain62's art gallery">
-    <meta name="author" content="Lain62">
-
+<HeadDefault title={pageTitle}>
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Lain62's Gallery">
-    <meta property="og:description" content="Lain62's art gallery">
-    <meta property="og:image" content={imagesThumbnail[imgThumbnailPath]()} />
-    <meta property="og:url" content={Astro.url.pathname} />
-    
-    <title>Lain62's Gallery {post.data.name}</title>
-</head>
+    <meta property="og:site_name" content="Lain62's art">
+    <meta property="og:description" content={post.data.alt}>
+    <meta property="og:image" content={images[imgPath]()} />
+    <meta property="og:url" content={Astro.url.pathname} />   
+</HeadDefault>
 <body>
-	<div>
-		<h1>Lain62's Gallery</h1>		
+	<div class="main">
+		<Header title="Lain62's Gallery" /> 
+		<MainBody>
+			<div class="sub-art">
+				<Image class="art" src={images[imgPath]()} alt={post.data.alt} />
+				<div class="component-div">
+					<h2>{post.data.date}</h2>			
+				</div>
+				<div class="component-div">
+					<h3>{post.data.alt}</h3>
+				</div>
+				<div class="desc-div">
+					<Content/>											
+				</div>
+			</div>
+		</MainBody>
+		<Footer/>
 	</div>
-	<div>
-		<Image class="art" src={images[imgPath]()} alt={post.data.alt} />
-		<h2>{post.data.date}</h2>
-		<Content />		
-	</div>
-	<div>
-		
-	</div>
+
 </body>
 <style>
+ body {
+	 background-color: #1B2021;
+ }
+ .desc-div .desc-title {
+	 text-align: center;
+	 font-size: 12px;
+ }
+ .desc-div {
+	 text-align: justify;
+	 padding: 10px;
+	 color: #FFD9DA;
+	 border-top-style: solid;
+	 border-top-color: #EA638C;
+	 border-top-width: 2px;
+ }
+ .sub-art {
+	 display:flex;
+	 flex-direction:column;
+	 max-width: 800px;
+ }
+
+ .main {
+	 display: flex;
+	 justify-content: center;
+	 align-items: center;
+	 flex-direction: column;
+ }
+ .component-div {
+	 display:flex;
+	 flex-direction: column;
+	 align-items: center;
+	 padding: 10px;
+	 color: #FFD9DA;
+	 border-top-style: solid;
+	 border-top-color: #EA638C;
+	 border-top-width: 2px;
+ }
+ 
+ .component-div h2, .component-div h3 {
+	 margin: 0;
+	 margin-top: auto;
+	 margin-bottom: auto;
+ }
  .art {
-	 width: auto;
-	 height: 100%;
-     max-height: 600px;
+	 width: 100%;
+	 height: auto;
+     max-width: 600px;
+	 align-self: center;
+	 margin-bottom: 20px;
  }
 </style>

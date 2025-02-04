@@ -1,6 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
+import Header from '/src/components/Header.astro';
+import Footer from '/src/components/Footer.astro';
+import MainBody from '/src/components/MainBody.astro';
+import HeadDefault from '/src/components/HeadDefault.astro';
 
 export async function getStaticPaths({ paginate }) {
 	const posts = await getCollection("gallery");
@@ -9,33 +13,23 @@ export async function getStaticPaths({ paginate }) {
 }
 const images = import.meta.glob<{ default: ImageMetadata }>("/src/gallery/images/art-thumbnail/*.{jpeg,jpg,png,gif}");
 const { page } = Astro.props;
+const page_tittle = "Page " + page.currentPage + " - Lain62's Gallery"
 ---
-<head>
-	<meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <meta name="keywords" content="HTML, CSS, Astro, Gallery, Art, Ivulai, ivu, ivulai, lain62, Lain62">
-    <meta name="description" content="Lain62's art Gallery">
-    <meta name="author" content="Lain62">
-
+<HeadDefault title={page_tittle}>
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Lain62's Gallery">
     <meta property="og:description" content="Lain62's art gallery">
-
-    <title>Lain62's Gallery</title>
-</head>
+</HeadDefault>
 <body>
-	<div class="gallery-header">
-		<h1>Lain62's Gallery</h1>
-	</div>
-	<div class="gallery-main">
+	<Header title="Lain62's Gallery" />
+	<MainBody>
 		<ul class="list-main">
 			{page.data.map(({ data }) => {
 			const imgPath = `/src/gallery/images/art-thumbnail/${data.image}`;
 			return <li class="list-item" ><a href={`/gallery/art/${data.name}`}><Image class="art" src={images[imgPath]()} alt={data.alt}></Image></a></li>
 			})}
 		</ul>
-	</div>
+	</MainBody>
 	<div class="gallery-page">
 		<h2>{page.currentPage}</h2>
 	</div>
@@ -43,11 +37,15 @@ const { page } = Astro.props;
 		{page.url.prev != undefined? <a href={page.url.prev}><</a> : <p></p>}
 		{page.url.next != undefined? <a href={page.url.next}>></a> : <p></p>}	
 	</div>
+	<Footer/>
 </body>
 <style>
 
  body {
 	 background-color: #1B2021;
+	 display: flex;
+	 flex-direction: column;
+	 align-items: center;
  }
  .gallery-footer a {
 	 text-decoration: none;
@@ -59,9 +57,6 @@ const { page } = Astro.props;
 	 margin-left: 20px;
 	 margin-right: 20px;
 	 border-radius: 10px;
-	 /* border-bottom-width: 4px;
-		border-bottom-style: solid;
-		border-bottom-color: #89023E; */
 	 background-color: #EA638C;
 	 font-family: "Azeret Mono";
  }
@@ -79,14 +74,13 @@ const { page } = Astro.props;
  .gallery-footer, .gallery-page {
 	 background-color: #30343F;
 	 max-width:900px;
+	 width: 100%;
 	 height: 80px;
 	 margin-left: auto;
 	 margin-right: auto;	 
 	 /* border-radius: 15px; */
 	 border-top-color: #EA638C;
 	 border-top-style: solid;
-	 border-bottom-right-radius: 15px;
-	 border-bottom-left-radius: 15px;
 	 border-top-width: 0;
 	 display: flex;
 	 justify-content: space-between;
@@ -113,6 +107,7 @@ const { page } = Astro.props;
 	 color: #FFD9DA;
 	 border-color: #EA638C;
 	 font-family: "Azeret Mono";
+	 z-index: 20;
  }
  
  .gallery-header {
@@ -151,6 +146,7 @@ const { page } = Astro.props;
 	 margin-right: auto;
 	 padding-top: 20px;
 	 padding-bottom: 20px;
+	 width: 100%;
  }
  .list-main {
 	 padding-left: 0;
@@ -160,6 +156,7 @@ const { page } = Astro.props;
 	 gap: 40px;
 	 justify-content: center;
 	 max-width: 900px;
+	 width: 100%;
 	 margin-left: auto;
 	 margin-right: auto;
 	 flex-wrap: wrap;

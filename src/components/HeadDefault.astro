@@ -1,0 +1,18 @@
+---
+interface Props {
+	title: string;
+}
+const { title} = Astro.props;
+---
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="keywords" content="HTML, CSS, Astro, Gallery, Art, Ivulai, ivu, ivulai, lain62, Lain62">
+    <meta name="description" content="Lain62's art Gallery">
+    <meta name="author" content="Lain62">
+
+	<slot/>
+	
+    <title>{title}</title>
+</head>
